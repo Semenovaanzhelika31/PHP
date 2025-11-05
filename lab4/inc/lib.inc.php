@@ -1,5 +1,5 @@
 <?php
-function getTable($cols = 5, $rows = 5, $color = '#ff0000') {
+function drawTable($cols = 5, $rows = 5, $color = '#ff0000') {
     echo '<table border="1" width="200" style="border-collapse: collapse;">';
     for ($i = 1; $i <= $rows; $i++) {
         echo '<tr>';
