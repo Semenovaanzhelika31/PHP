@@ -2,15 +2,19 @@
 require_once 'inc/lib.inc.php';
 require_once 'inc/data.inc.php';
 
+$cols = 10;
+$rows = 10;
+$color = '#ffff00';
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $cols = abs((int)$_POST['cols']);
     $rows = abs((int)$_POST['rows']);
     $color = trim(strip_tags($_POST['color']));
 }
 
-$cols = ($cols) ? $cols : 10;
-$rows = ($rows) ? $rows : 10;
-$color = ($color) ? $color : '#ffff00';
+if (!$cols) $cols = 10;
+if (!$rows) $rows = 10;
+if (!$color) $color = '#ffff00';
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -28,7 +32,6 @@ $color = ($color) ? $color : '#ffff00';
 
   <section>
     <h1>Таблица умножения</h1>
-
     <form action="<?= $_SERVER['REQUEST_URI'] ?>" method="POST">
       <label>Количество колонок: </label><br>
       <input name="cols" type="text" value="<?= htmlspecialchars($cols) ?>" required><br>
@@ -50,8 +53,14 @@ $color = ($color) ? $color : '#ffff00';
 
     <br>
 
+    <?php 
 
-    <?php drawTable($cols, $rows, $color); ?>
+    if (function_exists('drawTable')) {
+        drawTable($cols, $rows, $color);
+    } else {
+        echo '<p>Ошибка: функция drawTable() не определена. Проверьте подключение inc/lib.inc.php.</p>';
+    }
+    ?>
   </section>
 
   <nav>
