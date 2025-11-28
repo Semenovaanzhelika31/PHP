@@ -1,74 +1,104 @@
-<?php
-require_once 'inc/lib.inc.php';
-require_once 'inc/data.inc.php';
-
-$cols = 10;
-$rows = 10;
-$color = '#ffff00';
-
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $cols = abs((int)$_POST['cols']);
-    $rows = abs((int)$_POST['rows']);
-    $color = trim(strip_tags($_POST['color']));
-}
-
-if (!$cols) $cols = 10;
-if (!$rows) $rows = 10;
-if (!$color) $color = '#ffff00';
-?>
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Таблица умножения</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Таблица умножения</title>
+    <style>
+        table {
+            border: 2px solid black;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th,
+        td {
+            padding: 10px;
+            border: 1px solid black;
+        }
+        th {
+            background-color: <?php echo htmlspecialchars($color); ?>;
+            font-weight: bold;
+            text-align: center;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin: 5px 0;
+        }
+        input[type="text"] {
+            width: 100px;
+        }
+    </style>
 </head>
 <body>
-  <header>
-    <?php include 'inc/top.inc.php'; ?>
-  </header>
-
-  <section>
     <h1>Таблица умножения</h1>
-    <form action="<?= $_SERVER['REQUEST_URI'] ?>" method="POST">
-      <label>Количество колонок: </label><br>
-      <input name="cols" type="text" value="<?= htmlspecialchars($cols) ?>" required><br>
 
-      <label>Количество строк: </label><br>
-      <input name="rows" type="text" value="<?= htmlspecialchars($rows) ?>" required><br>
+    <?php
+    $cols = 10;
+    $rows = 10;
+    $color = '#ffff00';
 
-      <label>Цвет: </label><br>
-      <input name="color" type="color" value="<?= htmlspecialchars($color) ?>" list="listColors" required>
-      <datalist id="listColors">
-        <option value="#ff0000"></option>
-        <option value="#00ff00"></option>
-        <option value="#0000ff"></option>
-        <option value="#ffff00"></option>
-      </datalist><br><br>
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $cols_input = abs((int)($_POST['cols'] ?? 0));
+        $rows_input = abs((int)($_POST['rows'] ?? 0));
+        $color_input = trim(strip_tags($_POST['color'] ?? ''));
 
-      <input type="submit" value="Создать">
-    </form>
-
-    <br>
-
-    <?php 
-
-    if (function_exists('drawTable')) {
-        drawTable($cols, $rows, $color);
-    } else {
-        echo '<p>Ошибка: функция drawTable() не определена. Проверьте подключение inc/lib.inc.php.</p>';
+        if ($cols_input > 0) {
+            $cols = $cols_input;
+        }
+        if ($rows_input > 0) {
+            $rows = $rows_input;
+        }
+        if (!empty($color_input)) {
+            $color = $color_input;
+        }
     }
     ?>
-  </section>
 
-  <nav>
-    <?php include 'inc/menu.inc.php'; ?>
-  </nav>
+    <form method="POST" action="<?=$_SERVER['REQUEST_URI']?>">
+        <label>
+            Количество столбцов:
+            <input type="text" name="cols" value="<?php echo htmlspecialchars((string)$cols); ?>">
+        </label>
+        <label>
+            Количество строк:
+            <input type="text" name="rows" value="<?php echo htmlspecialchars((string)$rows); ?>">
+        </label>
+        <label>
+            Цвет заголовков:
+            <input type="color" name="color" value="<?php echo htmlspecialchars($color); ?>">
+        </label>
+        <button type="submit">Обновить таблицу</button>
+    </form>
 
-  <footer>
-    <?php include 'inc/bottom.inc.php'; ?>
-  </footer>
+    <!-- Таблица -->
+    <?php
+    function drawTable($cols, $rows, $color) {
+        echo '<table>';
+
+        for ($i = 1; $i <= $rows; $i++) {
+            echo '<tr>';
+
+            for ($j = 1; $j <= $cols; $j++) {
+                $result = $i * $j;
+
+                if ($i == 1 || $j == 1) {
+                    echo "<th style='background-color: $color;'>$result</th>";
+                } else {
+                    echo "<td>$result</td>";
+                }
+            }
+
+            echo '</tr>';
+        }
+
+        echo '</table>';
+    }
+
+    drawTable($cols, $rows, $color);
+    ?>
 </body>
 </html>
