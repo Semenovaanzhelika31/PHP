@@ -5,6 +5,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Гостевая книга</title>
+    <script>
+        function confirmDelete() {
+            return confirm("Вы уверены, что хотите удалить эту запись?");
+        }
+    </script>
 </head>
 <body>
 
@@ -36,7 +41,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 if (isset($_GET['delete'])) {
     $id = intval($_GET['delete']);
-    $sql = "DELETE FROM msgs WHERE id = $id";
+    // Убедитесь, что вы удаляете только одну запись с указанным id
+    $sql = "DELETE FROM msgs WHERE id = $id LIMIT 1"; // Добавлено LIMIT 1
     if (mysqli_query($conn, $sql)) {
         header("Location: " . $_SERVER['PHP_SELF']);
         exit();
@@ -55,7 +61,7 @@ while ($row = mysqli_fetch_assoc($result)) {
     echo "<p><strong>Имя:</strong> " . $row['name'] . "<br>";
     echo "<strong>Email:</strong> " . $row['email'] . "<br>";
     echo "<strong>Сообщение:</strong> " . $row['msg'] . "<br>";
-    echo "<a href='" . $_SERVER['PHP_SELF'] . "?delete=" . $row['id'] . "'>Удалить</a></p>";
+    echo "<a href='" . $_SERVER['PHP_SELF'] . "?delete=" . $row['id'] . "' onclick='return confirmDelete();'>Удалить</a></p>";
 }
 
 mysqli_close($conn);
@@ -63,11 +69,11 @@ mysqli_close($conn);
 
 <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
     Ваше имя:<br>
-    <input type="text" name="name"><br>
+    <input type="text" name="name" required><br>
     Ваш E-mail:<br>
-    <input type="email" name="email"><br>
+    <input type="email" name="email" required><br>
     Сообщение:<br>
-    <textarea name="msg" cols="50" rows="5"></textarea><br>
+    <textarea name="msg" cols="50" rows="5" required></textarea><br>
     <br>
     <input type="submit" value="Добавить!">
 </form>
