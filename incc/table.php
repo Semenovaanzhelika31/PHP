@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Таблица умножения</title>
+  <title>Калькулятор</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -16,71 +16,104 @@
   </header>
   <section>
     <!-- Заголовок -->
-    <h1>Таблица умножения</h1>
+
     <!-- Заголовок -->
     <!-- Область основного контента -->
-    <form action=''>
-      <label>Количество колонок: </label>
-      <br>
-      <input name='cols' type='text' value=''>
-      <br>
-      <label>Количество строк: </label>
-      <br>
-      <input name='rows' type='text' value=''>
-      <br>
-      <label>Цвет: </label>
-      <br>
-      <input name='color' type='color' value='#ff0000' list="listColors">
-	<datalist id="listColors">
-		<option>#ff0000</option>/>
-		<option>#00ff00</option>
-		<option>#0000ff</option>
-	</datalist>
-      <br>
-      <br>
-      <input type='submit' value='Создать'>
-    </form>
-    <br>
-    <!-- Таблица -->
-    <table border='1' width='200'>
-      <tr>
-        <td>1</td>
-        <td>2</td>
-        <td>3</td>
-        <td>4</td>
-        <td>5</td>
-      </tr>
-      <tr>
-        <td>2</td>
-        <td>4</td>
-        <td>6</td>
-        <td>8</td>
-        <td>10</td>
-      </tr>
-      <tr>
-        <td>3</td>
-        <td>6</td>
-        <td>9</td>
-        <td>12</td>
-        <td>15</td>
-      </tr>
-      <tr>
-        <td>4</td>
-        <td>8</td>
-        <td>12</td>
-        <td>16</td>
-        <td>10</td>
-      </tr>
-      <tr>
-        <td>5</td>
-        <td>10</td>
-        <td>15</td>
-        <td>20</td>
-        <td>25</td>
-      </tr>
-    </table>
-    <!-- Таблица -->
-    <!-- Область основного контента -->
+    <style>
+table {
+border: 2px solid black;
+border-collapse: collapse;
+margin-top: 20px;
+}
+th,
+td {
+padding: 10px;
+border: 1px solid black;
+}
+th {
+background-color: <?php echo htmlspecialchars($color); ?>;
+font-weight: bold;
+text-align: center;
+}
+form {
+margin-bottom: 20px;
+}
+label {
+display: block;
+margin: 5px 0;
+}
+input[type="text"] {
+width: 100px;
+}
+</style>
+</head>
+<body>
+<h1>Таблица умножения</h1>
+
+<?php
+$cols = 10;
+$rows = 10;
+$color = '#ffff00';
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+$cols_input = abs((int)($_POST['cols'] ?? 0));
+$rows_input = abs((int)($_POST['rows'] ?? 0));
+$color_input = trim(strip_tags($_POST['color'] ?? ''));
+
+if ($cols_input > 0) {
+$cols = $cols_input;
+}
+if ($rows_input > 0) {
+$rows = $rows_input;
+}
+if (!empty($color_input)) {
+$color = $color_input;
+}
+}
+?>
+
+
+<form method="POST" action="<?=$_SERVER['REQUEST_URI']?>">
+<label>
+Количество столбцов:
+<input type="text" name="cols" value="<?php echo htmlspecialchars((string)$cols); ?>">
+</label>
+<label>
+Количество строк:
+<input type="text" name="rows" value="<?php echo htmlspecialchars((string)$rows); ?>">
+</label>
+<label>
+Цвет заголовков:
+<input type="color" name="color" value="<?php echo htmlspecialchars($color); ?>">
+</label>
+<button type="submit">Обновить таблицу</button>
+</form>
+
+<?php
+function drawTable($cols, $rows, $color) {
+echo '<table>';
+
+for ($i = 1; $i <= $rows; $i++) {
+echo '<tr>';
+
+for ($j = 1; $j <= $cols; $j++) {
+$result = $i * $j;
+
+if ($i == 1 || $j == 1) {
+echo "<th style='background-color: $color;'>$result</th>";
+} else {
+echo "<td>$result</td>";
+}
+}
+
+echo '</tr>';
+}
+
+echo '</table>';
+}
+
+drawTable($cols, $rows, $color);
+?>
   </section>
   <nav>
     <h2>Навигация по сайту</h2>
