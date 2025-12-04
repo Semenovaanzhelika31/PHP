@@ -1,5 +1,4 @@
 <?php
-
 namespace MyProject\Classes;
 
 class User
@@ -12,28 +11,20 @@ class User
     {
         $this->name = $name;
         $this->login = $login;
-        $this->setPassword($password);
+        $this->password = $password;
     }
 
-    public function setPassword($password)
+    public function getInfo()
     {
-        $this->password = password_hash($password, PASSWORD_DEFAULT);
-    }
-
-    public function showInfo()
-    {
-        echo "<div class='user-info' style='margin-bottom: 20px;'>\n";
-        echo "  <p><strong>Пользователь:</strong> " . htmlspecialchars($this->name) . "</p>\n";
-        echo "  <p><strong>Логин:</strong> " . htmlspecialchars($this->login) . "</p>\n";
-        echo "  <p><strong>Пароль:</strong> [******]</p>\n";
-        echo "  <hr style='margin: 10px 0;'>\n";
-        echo "</div>\n";
+        return [
+            'name' => $this->name,
+            'login' => $this->login
+        ];
     }
 
     public function __destruct()
     {
-        // Для чистоты вывода в браузер — пишем в лог сервера
+
         error_log("Пользователь {$this->login} удалён.");
     }
 }
-?>
