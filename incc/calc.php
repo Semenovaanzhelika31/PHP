@@ -6,7 +6,6 @@ $num2 = '';
 $operator = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Получаем и валидируем входные данные
     $num1 = filter_input(INPUT_POST, 'num1', FILTER_VALIDATE_FLOAT);
     $num2 = filter_input(INPUT_POST, 'num2', FILTER_VALIDATE_FLOAT);
     $operator = filter_input(INPUT_POST, 'operator', FILTER_SANITIZE_STRING);
