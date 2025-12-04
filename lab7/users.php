@@ -30,6 +30,7 @@ $superUserData = $superUser->getInfo();
 <body>
     <h1>Информация о пользователях</h1>
 
+
     <div class="user">
         <h3><?= htmlspecialchars($userData1['name']) ?></h3>
         <p><strong>Логин:</strong> <?= htmlspecialchars($userData1['login']) ?></p>
