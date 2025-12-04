@@ -1,30 +1,25 @@
 <?php
 namespace MyProject\Classes;
 
-class User
-{
+class User {
     public $name;
     public $login;
     private $password;
 
-    public function __construct($name, $login, $password)
-    {
+    public function __construct($name, $login, $password) {
         $this->name = $name;
         $this->login = $login;
         $this->password = $password;
     }
 
-    public function getInfo()
-    {
+    public function getInfo() {
         return [
             'name' => $this->name,
             'login' => $this->login
         ];
     }
 
-    public function __destruct()
-    {
-
+    public function __destruct() {
         error_log("Пользователь {$this->login} удалён.");
     }
 }
