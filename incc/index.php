@@ -13,28 +13,19 @@ require_once 'inc/data.inc.php';
 </head>
 <body>
   <header>
-    <!-- Верхняя часть страницы -->
     <?php include 'inc/top.inc.php'; ?>
-    <!-- Верхняя часть страницы -->
   </header>
 
   <section>
-    <!-- Заголовок -->
-    <!-- Область основного контента -->
     <?php include 'inc/index.inc.php'; ?>
-    <!-- Область основного контента -->
   </section>
 
   <nav>
-    <!-- Навигация -->
     <?php include 'inc/menu.inc.php'; ?>
-    <!-- Навигация -->
   </nav>
 
   <footer>
-    <!-- Нижняя часть страницы -->
     <?php include 'inc/bottom.inc.php'; ?>
-    <!-- Нижняя часть страницы -->
   </footer>
 </body>
 </html>
