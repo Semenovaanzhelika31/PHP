@@ -1,8 +1,7 @@
 <?php
-
 namespace MyProject\Classes;
 
-require_once __DIR__ . '/User.php';
+use MyProject\Classes\User;
 
 class SuperUser extends User
 {
@@ -14,10 +13,10 @@ class SuperUser extends User
         $this->role = $role;
     }
 
-    public function showInfo()
+    public function getInfo()
     {
-        parent::showInfo();
-        echo "<p><strong>Роль:</strong> " . htmlspecialchars($this->role) . "</p>\n";
+        $info = parent::getInfo();
+        $info['role'] = $this->role;
+        return $info;
     }
 }
-?>
