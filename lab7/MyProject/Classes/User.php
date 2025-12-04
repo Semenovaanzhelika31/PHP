@@ -20,6 +20,6 @@ class User {
     }
 
     public function __destruct() {
-        error_log("Пользователь {$this->login} удалён.");
+        echo "Пользователь {$this->login} удалён.<br>";
     }
 }
